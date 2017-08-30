@@ -11,16 +11,20 @@
 				height: 100vh;
 				width: 100vw;
 			}
+			svg > * {
+				mix-blend-mode: screen;
+			}
 			body {
 				margin: 0;
 				overflow: hidden;
-				background: #360;
+				background: #000;
 				color: #fff;
 			}
 			#status {
 				top: 0;
 				position: fixed;
 				display: flex;
+				mix-blend-mode: screen;
 			}
 			#status > * {
 				text-align: center;
