@@ -64,7 +64,13 @@ const keyListen = down => ({key}) => {
 onkeydown = keyListen (true)
 onkeyup = keyListen (false)
 
-const gameLoop = ()=> {
+let lastFrame = 0
+
+const gameLoop = timestamp => {
+	
+
+	const fast = pressed.has ('shift')
+
 	if (newKey) {
 		showDebug ()
 
@@ -78,10 +84,14 @@ const gameLoop = ()=> {
 			))
 		)
 	} newKey = false
+	
 
+	const speed = (timestamp - lastFrame) / 1000 * 60 * (fast ? 4 : 1)
+	lastFrame = timestamp
+	
 	for (const actionWord of currentActions) {
 		const action = actions [actionWord]
-		action && action ()
+		action && action (speed)
 	}
 
 	pressed.size && sel ('#world').setAttribute (
@@ -89,22 +99,22 @@ const gameLoop = ()=> {
 		`rotate(${mod (angle * 360 / 256, 360)}) ` +
 		`translate (${position.slice ().reverse ().join(' ')})`
 	)
-	
+
 	requestAnimationFrame (gameLoop)
 }
 
-const moveBy = (...vec) => ()=> {
+const moveBy = (...vec) => speed => {
 	position[0] +=
-		cos (angle * TAU / 256) * vec [0] -
-		sin (angle * TAU / 256) * vec [1]
+		cos (angle * TAU / 256) * vec [0] * speed -
+		sin (angle * TAU / 256) * vec [1] * speed
 	position[1] += 
-		sin (angle * TAU / 256) * vec [0] +
-		cos (angle * TAU / 256) * vec [1]
+		sin (angle * TAU / 256) * vec [0] * speed +
+		cos (angle * TAU / 256) * vec [1] * speed
 }
 
 const actions = {
-	cw: ()=> angle ++,
-	ccw: ()=> angle --,
+	cw: speed => angle += speed,
+	ccw: speed => angle -= speed,
 	up: moveBy (1, 0),
 	down: moveBy (-1, 0),
 	left: moveBy (0, 1),
