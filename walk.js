@@ -12,7 +12,7 @@ onload = ()=> {
 				tag: 'polygon', svg: true,
 				attr: {
 					id: 'player', fill: '#f60',
-					points: polygonString (spriteMod.base),
+					points: playerSprite (),
 				}
 			}),
 			elem ({
@@ -41,7 +41,7 @@ const polygonString = array =>
 	)
 
 const pressed = new Set ()
-let currentActions = []
+let actionList = []
 let	newKey = false
 let	position = [0, 0]
 let	angle = 0
@@ -66,30 +66,37 @@ onkeyup = keyListen (false)
 
 let lastFrame = 0
 
-const gameLoop = timestamp => {
-	
+const playerSprite = (actionList = [], fast = false) =>
+	polygonString (vecAdd (
+		vecMul (spriteMod.base, 8),
+		actionList.length ? vecMul (
+			vecAdd (
+			...actionList.map (action =>
+				spriteMod [action] || 8 .map (()=> 0)
+			)
+		), fast ? 4 : 1 ) : 8 .map (()=> 0)
+	))
 
+const gameLoop = timestamp => {
 	const fast = pressed.has ('shift')
 
 	if (newKey) {
 		showDebug ()
 
-		currentActions = [...pressed].map (key => actionMap [key] || key)
+		actionList = [...pressed].map (key => actionMap [key] || key)
 
 		sel ('#player').setAttribute ('points',
-			polygonString (vecAdd (spriteMod.base,
-				...[...currentActions].map (action =>
-					spriteMod [action] || 8 .map (()=> 0)
-				)
-			))
+			playerSprite (actionList, fast)
 		)
 	} newKey = false
 	
 
-	const speed = (timestamp - lastFrame) / 1000 * 60 * (fast ? 4 : 1)
+	const speed =
+		(timestamp - lastFrame) /
+		1000 * 60 * (fast ? 4 : 1)
 	lastFrame = timestamp
 	
-	for (const actionWord of currentActions) {
+	for (const actionWord of actionList) {
 		const action = actions [actionWord]
 		action && action (speed)
 	}
@@ -128,8 +135,12 @@ const vecAdd = (...vecs) =>
 		)
 	)
 
+const vecMul = (vec, fact) =>
+	fact == 1 ? vec :
+		vec.map (comp => comp * fact)
+
 const spriteMod = {
-	base: [-8, 0, 0, 8, 8, 0, 0, -8],
+	base: [-1, 0, 0, 1, 1, 0, 0, -1],
 	up: [0, 1, 0, -1, 0, 1, 0, -1],
 	down: [0, -1, 0, 1, 0, -1, 0, 1],
 	left: [-1, 0, 1, 0, -1, 0, 1, 0],
