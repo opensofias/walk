@@ -135,8 +135,7 @@ const vecAdd = (...vecs) =>
 	)
 
 const vecMul = (vec, fact) =>
-	fact == 1 ? vec :
-		vec.map (comp => comp * fact)
+	fact == 1 ? vec : vec.map (comp => comp * fact)
 
 const spriteMod = {
 	base: [-1, 0, 0, 1, 1, 0, 0, -1],
