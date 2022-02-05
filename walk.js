@@ -54,9 +54,8 @@ const actionMap = {
 
 const keyListen = down => ({key}) => {
 	key = key.toLowerCase()
-	if (''.startsWith)
-		if (key.startsWith ('arrow'))
-			key = key.slice (5)
+	if (key.startsWith ('arrow'))
+		key = key.slice (5)
 	newKey = down != pressed.has (key)
 	newKey && pressed [down ? 'add' : 'delete'] (key)
 }
