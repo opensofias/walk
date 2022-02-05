@@ -142,9 +142,3 @@ const TAU = Math.PI * 2
 
 const str2byte = str =>
 	str.split ('').map (chr => chr.charCodeAt(0))
-
-const hash = token => {
-	const blake = new BLAKE2s(32, {salt: str2byte (config.salt)})
-	blake.update (str2byte (token))
-	return blake.hexDigest ()
-}
