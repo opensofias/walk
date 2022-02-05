@@ -26,11 +26,6 @@ const {elem, sel, selAll} = document ? {
 	selAll: selector => [...d.querySelectorAll(selector)]
 } : {}
 
-const inherit = (parent, ...mixins) =>
-	O.freeze (O.assign (
-		O.create (parent), ...mixins
-	))
-
 const mod = (x, y) => ((x % y) + y) % y
 const {sin, cos, floor, ceil} = Math
 const TAU = Math.PI * 2
