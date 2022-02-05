@@ -140,15 +140,6 @@ const mod = (x, y) => ((x % y) + y) % y
 const {sin, cos, floor, ceil} = Math
 const TAU = Math.PI * 2
 
-const flatten = array =>
-	array.reduce ((acc, child) =>
-		acc.concat (
-			A.isArray (child) ?
-			flatten (child) :
-			child
-		), []
-)
-
 const str2byte = str =>
 	str.split ('').map (chr => chr.charCodeAt(0))
 
