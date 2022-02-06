@@ -67,7 +67,7 @@ let lastFrame = 0
 
 const playerSprite = (actionList = [], fast = false) =>
 	polygonString (vecAdd (
-		vecMul (spriteMod.base, 8),
+		vecMul (baseSprite, 8),
 		actionList.length ? vecMul (
 			vecAdd (
 			...actionList.map (action =>
@@ -137,8 +137,9 @@ const vecAdd = (...vecs) =>
 const vecMul = (vec, fact) =>
 	fact == 1 ? vec : vec.map (comp => comp * fact)
 
+const baseSprite = [-1, 0, 0, 1, 1, 0, 0, -1]
+
 const spriteMod = {
-	base: [-1, 0, 0, 1, 1, 0, 0, -1],
 	up: [0, 1, 0, -1, 0, 1, 0, -1],
 	get down() {return vecMul (this.up, -1)},
 	left: [-1, 0, 1, 0, -1, 0, 1, 0],
