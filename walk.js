@@ -46,7 +46,7 @@ let	newKey = false
 let	position = [0, 0]
 let	angle = 0
 
-const actionMap = {
+const actionKeyMap = {
 	q: 'cw', e: 'ccw',
 	w: 'up', s: 'down',
 	a: 'left', d: 'right'
@@ -82,7 +82,7 @@ const gameLoop = timestamp => {
 	if (newKey) {
 		showDebug ()
 
-		actionList = [...pressed].map (key => actionMap [key] || key)
+		actionList = [...pressed].map (key => actionKeyMap [key] || key)
 
 		sel ('#player').setAttribute ('points',
 			playerSprite (actionList, fast)
