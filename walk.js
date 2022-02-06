@@ -68,12 +68,11 @@ let lastFrame = 0
 const playerSprite = (actionList = [], fast = false) =>
 	polygonString (vecAdd (
 		vecMul (baseSprite, 8),
-		actionList.length ? vecMul (
-			vecAdd (
-			...actionList.map (action =>
-				spriteMod (...actionVec [action]) || 8 .map (()=> 0)
-			)
-		), fast ? 4 : 1 ) : 8 .map (()=> 0)
+		spriteMod (
+		...vecMul (actionList.reduce ((pre, cur) =>
+			vecAdd (pre, actionVec [cur] ?? [0, 0, 0]),
+			[0, 0, 0]),
+		fast ? 4 : 1))
 	))
 
 const gameLoop = timestamp => {
