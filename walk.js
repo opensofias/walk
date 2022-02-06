@@ -69,7 +69,7 @@ const playerSprite = (actionList = [], fast = false) =>
 	polygonString (vecAdd (
 		vecMul (baseSprite, 8),
 		spriteMod (
-		...vecMul (actionList.reduce ((pre, cur) =>
+		vecMul (actionList.reduce ((pre, cur) =>
 			vecAdd (pre, actionVec [cur] ?? [0, 0, 0]),
 			[0, 0, 0]),
 		fast ? 4 : 1))
@@ -81,7 +81,7 @@ const gameLoop = timestamp => {
 	if (newKey) {
 		showDebug ()
 
-		actionList = [...pressed].map (key => actionKeyMap [key] || key)
+		actionList = [...pressed].map (key => actionKeyMap [key] ?? key)
 
 		sel ('#player').setAttribute ('points',
 			playerSprite (actionList, fast)
@@ -95,8 +95,7 @@ const gameLoop = timestamp => {
 	lastFrame = timestamp
 	
 	for (const actionWord of actionList) {
-		const action = actions [actionWord]
-		action && action (speed)
+		moveBy (actionVec [actionWord] ?? [0, 0, 0]) (speed)
 	}
 
 	pressed.size && sel ('#world').setAttribute (
@@ -108,22 +107,14 @@ const gameLoop = timestamp => {
 	requestAnimationFrame (gameLoop)
 }
 
-const moveBy = (...vec) => speed => {
+const moveBy = ([y, x, r]) => speed => {
 	position[0] +=
-		cos (angle * TAU / 256) * vec [0] * speed -
-		sin (angle * TAU / 256) * vec [1] * speed
-	position[1] += 
-		sin (angle * TAU / 256) * vec [0] * speed +
-		cos (angle * TAU / 256) * vec [1] * speed
-}
-
-const actions = {
-	cw: speed => angle += speed,
-	ccw: speed => angle -= speed,
-	up: moveBy (1, 0),
-	down: moveBy (-1, 0),
-	left: moveBy (0, 1),
-	right: moveBy (0, -1)
+		cos (angle * TAU / 256) * y * speed -
+		sin (angle * TAU / 256) * x * speed
+	position[1] +=
+		sin (angle * TAU / 256) * y * speed +
+		cos (angle * TAU / 256) * x * speed
+	angle += speed * r
 }
 
 const vecAdd = (...vecs) =>
@@ -144,7 +135,7 @@ const actionVec = {
 	cw: [0, 0, 1], ccw: [0, 0, -1]
 }
 
-const spriteMod = (y, x, r) => [
+const spriteMod = ([y, x, r]) => [
 	-x, y - r, x - r, -y,
 	-x, y + r, x + r, -y,
 ]
