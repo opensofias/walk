@@ -141,7 +141,7 @@ const baseSprite = [-1, 0, 0, 1, 1, 0, 0, -1]
 
 const actionVec = {
 	up: [1, 0, 0], down: [-1, 0, 0],
-	left: [0, 1, 0], right: [0, 1, 0],
+	left: [0, 1, 0], right: [0, -1, 0],
 	cw: [0, 0, 1], ccw: [0, 0, -1]
 }
 
