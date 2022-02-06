@@ -7,22 +7,20 @@ O.assign (N.prototype, {
 		let count = 0
 		while (count < this) yield count ++
 	},
-	forEach (callback) {
-		for (const num of this) callback (num, this)
-	},
-	reduce (callback, initial) {
-		let acc = initial
-		let noInitial = typeof initial == 'undefined'
+	forEach (fun) { for (const num of this) fun (num, this) },
+	reduce (fun, init) {
+		let acc = init
+		let noInit = typeof init == 'undefined'
 		for (const val of this) {
-			if (noInitial) acc = val
-			else acc = callback (acc, val)
-			noInitial = false
+			if (noInit) acc = val
+			else acc = fun (acc, val)
+			noInit = false
 		}
 		return acc
 	},
-	map (callback) {
+	map (fun) {
 		let result = []
-		this.forEach (val => result.push (callback (val, this)))
+		this.forEach (val => result.push (fun (val, this)))
 		return result
 	},
 })
