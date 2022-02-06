@@ -140,11 +140,11 @@ const vecMul = (vec, fact) =>
 const spriteMod = {
 	base: [-1, 0, 0, 1, 1, 0, 0, -1],
 	up: [0, 1, 0, -1, 0, 1, 0, -1],
-	down: [0, -1, 0, 1, 0, -1, 0, 1],
+	get down() {return vecMul (this.up, -1)},
 	left: [-1, 0, 1, 0, -1, 0, 1, 0],
-	right: [1, 0, -1, 0, 1, 0, -1, 0],
+	get right() {return vecMul (this.left, -1)},
 	cw: [0, -1, -1, 0, 0, 1, 1, 0],
-	ccw: [0, 1, 1, 0, 0, -1, -1, 0],
+	get ccw() {return vecMul (this.cw, -1)},
 }
 
 const showDebug = ()=> {
