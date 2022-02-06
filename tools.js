@@ -11,14 +11,13 @@ const {elem, sel, selAll} = document ? {
 			typeof attr[name] == 'boolean' ?
 				attr[name] && el.setAttribute(name, name) :
 				el.setAttribute(name, attr[name])
-		void {
-			string () {el.innerText = content},
-			number: ()=> el.innerText = content.toString(),
-			undefined: ()=> undefined,
-			object: ()=> content instanceof Array ?
-				content.forEach(contEl => el.appendChild(contEl)) :
-				el.appendChild(content)
-		} [typeof content] ()
+
+		void (type =>
+			['string', 'number'].includes (type) ?
+				el.innerText = content :
+			type == 'object' && [content].flat ()
+				.forEach(contEl => el.appendChild(contEl))
+		) (typeof content)
 
 		return O.assign (el, mixin)
 	},
