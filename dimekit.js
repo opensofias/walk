@@ -2,20 +2,14 @@
 
 const iterMixin = Object.freeze({
 	reduce (callback, initial) {
-		let acc
-		if (initial === undefined) {
-			let first = true
-			for (const val of this)	{
-				if (first) acc = val
-				else acc = callback (acc, val)
-				first = false
-			}
-		} else {
-			acc = initial
-			this.forEach (val =>
-				acc = callback (acc, val)
-			)
-		}	return acc
+		let acc = initial
+		let noInitial = typeof initial == 'undefined'
+		for (const val of this) {
+			if (noInitial) acc = val
+			else acc = callback (acc, val)
+			noInitial = false
+		}
+		return acc
 	},
 	filter (callback) {
 		let result = []
