@@ -12,9 +12,8 @@ O.assign (N.prototype, {
 		let acc = init
 		let noInit = typeof init == 'undefined'
 		for (const val of this) {
-			if (noInit) acc = val
+			if (noInit) acc = val, noInit = false
 			else acc = fun (acc, val)
-			noInit = false
 		}
 		return acc
 	},
