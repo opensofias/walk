@@ -2,10 +2,11 @@
 
 O.assign (N.prototype, {
 	*[Symbol.iterator] () {
-		if (this < 0) throw 'cannot iterate over negative number: ' + this
-
+		const neg = this < 0
+		const goal = neg ? -this : this
 		let count = 0
-		while (count < this) yield count ++
+		while (count < goal)
+			yield neg ? -(this + ++ count) : count ++
 	},
 	forEach (fun) { for (const num of this) fun (num, this) },
 	reduce (fun, init) {
