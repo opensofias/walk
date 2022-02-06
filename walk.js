@@ -29,7 +29,7 @@ const makeTrees = ()=> 16 .map (num =>
 	elem ({
 		tag: 'circle', svg: true,
 		attr: {
-			cx: (num % 4 -1.5) * 64 , cy: ((num >> 2) - 1.5) * 64, r: 8,
+			cx: (num % 4 -1.5) * 64 , cy: ((num >> 2) - 1.5) * 64, r: 16,
 			fill: '#480',
 		},
 	})
