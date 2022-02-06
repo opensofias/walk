@@ -56,8 +56,5 @@ O.assign (N.prototype, {
 		return result}
 }, iterMixin)
 
-O.getOwnPropertyNames(Math)
-.forEach (key => window [key] = Math [key])
-
 O.assign (Set.prototype, iterMixin)
 
