@@ -19,8 +19,6 @@ O.assign (N.prototype, {
 		return acc
 	},
 	map (fun) {
-		let result = []
-		this.forEach (val => result.push (fun (val, this)))
-		return result
+		return this.reduce ((prev, cur) => [...prev, fun (cur)], [])
 	},
 })
