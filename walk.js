@@ -22,6 +22,7 @@ onload = ()=> {
 			})
 		]
 	}))
+	keys.listen ()
 	requestAnimationFrame (gameLoop)
 }
 
@@ -40,28 +41,32 @@ const polygonString = array =>
 		[val, acc].join (' ,' [idx % 2])
 	)
 
-const pressed = new Set ()
-let actionList = []
-let	newKey = false
 let	position = [0, 0]
 let	angle = 0
 
-const actionKeyMap = {
-	q: 'cw', e: 'ccw',
-	w: 'up', s: 'down',
-	a: 'left', d: 'right'
+const keys = {
+	listen () {
+		[onkeydown, onkeyup] = [true, false].map (
+			down => ({key: keyId}) => {
+				const key = ((x) =>
+					(x.startsWith ('Arrow') ? x.slice (5) : x)
+					.toLowerCase ()) (keyId)
+				console.log (key)
+				this.newEvent = down != this.pressed.has (key)
+				this.newEvent && this.pressed [down ? 'add' : 'delete'] (key)
+		})
+	},
+	newEvent: false,
+	pressed: new Set(),
+	actionMap: {
+		q: 'cw', e: 'ccw',
+		w: 'up', s: 'down',
+		a: 'left', d: 'right'
+	},
+	get actionList () {
+		return [...this.pressed].map (key => this.actionMap [key] ?? key)
+	},
 }
-
-const keyListen = down => ({key}) => {
-	key = key.toLowerCase()
-	if (key.startsWith ('arrow'))
-		key = key.slice (5)
-	newKey = down != pressed.has (key)
-	newKey && pressed [down ? 'add' : 'delete'] (key)
-}
-
-onkeydown = keyListen (true)
-onkeyup = keyListen (false)
 
 let lastFrame = 0
 
@@ -76,17 +81,15 @@ const playerSprite = (actionList = [], fast = false) =>
 	))
 
 const gameLoop = timestamp => {
-	const fast = pressed.has ('shift')
+	const fast = keys.pressed.has ('shift')
 
-	if (newKey) {
+	if (keys.newEvent) {
 		showDebug ()
 
-		actionList = [...pressed].map (key => actionKeyMap [key] ?? key)
-
 		sel ('#player').setAttribute ('points',
-			playerSprite (actionList, fast)
+			playerSprite (keys.actionList, fast)
 		)
-	} newKey = false
+	} keys.newEvent = false
 	
 
 	const speed =
@@ -94,11 +97,11 @@ const gameLoop = timestamp => {
 		1000 * 60 * (fast ? 4 : 1)
 	lastFrame = timestamp
 	
-	for (const actionWord of actionList) {
+	for (const actionWord of keys.actionList) {
 		moveBy (actionVec [actionWord] ?? [0, 0, 0]) (speed)
 	}
 
-	pressed.size && sel ('#world').setAttribute (
+	keys.pressed.size && sel ('#world').setAttribute (
 		'transform',
 		`rotate(${mod (angle * 360 / 256, 360)}) ` +
 		`translate (${position.slice ().reverse ().join(' ')})`
@@ -145,7 +148,7 @@ const showDebug = ()=> {
 	status && status.remove ()
 	d.body.appendChild (elem ({
 		attr: {id: 'status'},
-		content: [...pressed].map (key =>
+		content: [...keys.pressed].map (key =>
 			elem ({content: key})
 		)
 	}))
