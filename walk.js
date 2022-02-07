@@ -51,7 +51,6 @@ const keys = {
 				const key = ((x) =>
 					(x.startsWith ('Arrow') ? x.slice (5) : x)
 					.toLowerCase ()) (keyId)
-				console.log (key)
 				this.newEvent = down != this.pressed.has (key)
 				this.newEvent && this.pressed [down ? 'add' : 'delete'] (key)
 		})
