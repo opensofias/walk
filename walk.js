@@ -1,4 +1,5 @@
-'use strict'
+import {} from './dimekit.js'
+import {d, elem, sel, mod, sin, cos,TAU} from './tools.js'
 
 onload = ()=> {
 	d.body.appendChild (elem ({

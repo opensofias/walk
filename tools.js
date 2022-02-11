@@ -1,8 +1,6 @@
-'use strict'
+export const [O, A, N, d] = [Object, Array, Number, document]
 
-const [O, A, N, d] = [Object, Array, Number, document]
-
-const elem = ({tag = 'div', attr = {}, mixin = {}, content = [], svg = false}) => {
+export const elem = ({tag = 'div', attr = {}, mixin = {}, content = [], svg = false}) => {
 	const el = svg ?
 		d.createElementNS ('http://www.w3.org/2000/svg', tag) :
 		d.createElement (tag)
@@ -21,12 +19,12 @@ const elem = ({tag = 'div', attr = {}, mixin = {}, content = [], svg = false}) =
 	return O.assign (el, mixin)
 }
 
-const sel = selector => d.querySelector (selector)
-const selAll = selector => [...d.querySelectorAll(selector)]
+export const sel = selector => d.querySelector (selector)
+export const selAll = selector => [...d.querySelectorAll(selector)]
 
-const mod = (x, y) => ((x % y) + y) % y
-const {sin, cos, floor, ceil} = Math
-const TAU = Math.PI * 2
+export const mod = (x, y) => ((x % y) + y) % y
+export const {sin, cos, floor, ceil} = Math
+export const TAU = Math.PI * 2
 
-const str2byte = str =>
+export const str2byte = str =>
 	str.split ('').map (chr => chr.charCodeAt(0))

@@ -1,4 +1,4 @@
-'use strict'
+import {O, N} from './tools.js'
 
 O.assign (N.prototype, {
 	*[Symbol.iterator] () {
