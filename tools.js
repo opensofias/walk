@@ -19,7 +19,3 @@ export const elem = ({tag = 'div', attr = {}, mixin = {}, content = [], svg = fa
 
 export const sel = selector => document.querySelector (selector)
 export const selAll = selector => [...document.querySelectorAll(selector)]
-
-export const mod = (x, y) => ((x % y) + y) % y
-export const {sin, cos, floor, ceil} = Math
-export const TAU = Math.PI * 2

@@ -1,5 +1,5 @@
 import {} from './dimekit.js'
-import {elem, sel, mod, sin, cos, TAU} from './tools.js'
+import {elem, sel} from './tools.js'
 
 onload = ()=> {
 	document.body.appendChild (elem ({
@@ -109,6 +109,10 @@ const gameLoop = timestamp => {
 
 	requestAnimationFrame (gameLoop)
 }
+
+const mod = (x, y) => ((x % y) + y) % y
+const {sin, cos, floor, ceil} = Math
+const TAU = Math.PI * 2
 
 const moveBy = ([y, x, r]) => speed => {
 	position[0] +=
