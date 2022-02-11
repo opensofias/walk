@@ -6,7 +6,7 @@ onload = ()=> {
 
 	document.body.appendChild (world.canvas)
 	keys.listen ()
-	requestAnimationFrame (gameLoop)
+	requestAnimationFrame (gameLoop (world) ({}))
 }
 
 const makeWorld = ()=> {
@@ -87,7 +87,7 @@ const playerSprite = (actionList = [], fast = false) =>
 		fast ? 4 : 1))
 	))
 
-const gameLoop = timestamp => {
+const gameLoop = world => past => timestamp => {
 	const fast = keys.pressed.has ('shift')
 
 	if (keys.newEvent) {
@@ -114,7 +114,7 @@ const gameLoop = timestamp => {
 		`translate (${position.slice ().reverse ().join(' ')})`
 	)
 
-	requestAnimationFrame (gameLoop)
+	requestAnimationFrame (gameLoop (world) ({}))
 }
 
 const mod = (x, y) => ((x % y) + y) % y
