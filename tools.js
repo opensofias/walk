@@ -23,6 +23,3 @@ export const selAll = selector => [...document.querySelectorAll(selector)]
 export const mod = (x, y) => ((x % y) + y) % y
 export const {sin, cos, floor, ceil} = Math
 export const TAU = Math.PI * 2
-
-export const str2byte = str =>
-	str.split ('').map (chr => chr.charCodeAt(0))
