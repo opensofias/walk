@@ -1,8 +1,8 @@
 import {} from './dimekit.js'
-import {d, elem, sel, mod, sin, cos,TAU} from './tools.js'
+import {elem, sel, mod, sin, cos, TAU} from './tools.js'
 
 onload = ()=> {
-	d.body.appendChild (elem ({
+	document.body.appendChild (elem ({
 		tag: 'svg', svg: true,
 		attr: {
 			id: 'game', viewBox: '-128 -128 256 256',
@@ -146,7 +146,7 @@ const spriteMod = ([y, x, r]) => [
 const showDebug = ()=> {
 	const status = sel ('#status')
 	status && status.remove ()
-	d.body.appendChild (elem ({
+	document.body.appendChild (elem ({
 		attr: {id: 'status'},
 		content: [...keys.pressed].map (key =>
 			elem ({content: key})

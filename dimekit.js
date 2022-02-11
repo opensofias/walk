@@ -1,6 +1,4 @@
-import {O, N} from './tools.js'
-
-O.assign (N.prototype, {
+Object.assign (Number.prototype, {
 	*[Symbol.iterator] () {
 		const neg = this < 0
 		const goal = neg ? -this : this

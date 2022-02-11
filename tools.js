@@ -1,9 +1,7 @@
-export const [O, A, N, d] = [Object, Array, Number, document]
-
 export const elem = ({tag = 'div', attr = {}, mixin = {}, content = [], svg = false}) => {
 	const el = svg ?
-		d.createElementNS ('http://www.w3.org/2000/svg', tag) :
-		d.createElement (tag)
+		document.createElementNS ('http://www.w3.org/2000/svg', tag) :
+		document.createElement (tag)
 	for (const name in attr)
 		typeof attr[name] == 'boolean' ?
 			attr[name] && el.setAttribute(name, name) :
@@ -16,11 +14,11 @@ export const elem = ({tag = 'div', attr = {}, mixin = {}, content = [], svg = fa
 			.forEach(contEl => el.appendChild(contEl))
 	) (typeof content)
 
-	return O.assign (el, mixin)
+	return Object.assign (el, mixin)
 }
 
-export const sel = selector => d.querySelector (selector)
-export const selAll = selector => [...d.querySelectorAll(selector)]
+export const sel = selector => document.querySelector (selector)
+export const selAll = selector => [...document.querySelectorAll(selector)]
 
 export const mod = (x, y) => ((x % y) + y) % y
 export const {sin, cos, floor, ceil} = Math
