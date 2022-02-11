@@ -2,6 +2,14 @@ import {} from './dimekit.js'
 import {elem, sel} from './tools.js'
 
 onload = ()=> {
+	const world = makeWorld ()
+
+	document.body.appendChild (world.canvas)
+	keys.listen ()
+	requestAnimationFrame (gameLoop)
+}
+
+const makeWorld = ()=> {
 	const player = elem ({
 		tag: 'polygon', svg: true,
 		attr: {
@@ -23,9 +31,7 @@ onload = ()=> {
 		content: [player, trees]
 	})
 
-	document.body.appendChild (canvas)
-	keys.listen ()
-	requestAnimationFrame (gameLoop)
+	return {player, trees, canvas}
 }
 
 const makeTrees = ()=> 16 .map (num =>
