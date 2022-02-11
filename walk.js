@@ -2,27 +2,28 @@ import {} from './dimekit.js'
 import {elem, sel} from './tools.js'
 
 onload = ()=> {
-	document.body.appendChild (elem ({
+	const player = elem ({
+		tag: 'polygon', svg: true,
+		attr: {
+			id: 'player', fill: '#f60',
+			points: playerSprite (),
+		}
+	})
+	const trees = elem ({
+		tag: 'g', svg: true,
+		attr: {id: 'world', fill: '#480',},
+		content: makeTrees (),
+	})
+	const canvas = elem ({
 		tag: 'svg', svg: true,
 		attr: {
 			id: 'game', viewBox: '-128 -128 256 256',
 			xmlns: 'http://www.w3.org/2000/svg'
 		},
-		content: [
-			elem ({
-				tag: 'polygon', svg: true,
-				attr: {
-					id: 'player', fill: '#f60',
-					points: playerSprite (),
-				}
-			}),
-			elem ({
-				tag: 'g', svg: true,
-				attr: {id: 'world', fill: '#480',},
-				content: makeTrees (),
-			})
-		]
-	}))
+		content: [player, trees]
+	})
+
+	document.body.appendChild (canvas)
 	keys.listen ()
 	requestAnimationFrame (gameLoop)
 }
