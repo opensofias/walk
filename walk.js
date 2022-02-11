@@ -17,9 +17,9 @@ const makeWorld = ()=> {
 			points: playerSprite (),
 		}
 	})
-	const trees = elem ({
+	const land = elem ({
 		tag: 'g', svg: true,
-		attr: {id: 'world', fill: '#480',},
+		attr: {id: 'land', fill: '#480',},
 		content: makeTrees (),
 	})
 	const canvas = elem ({
@@ -28,10 +28,10 @@ const makeWorld = ()=> {
 			id: 'game', viewBox: '-128 -128 256 256',
 			xmlns: 'http://www.w3.org/2000/svg'
 		},
-		content: [player, trees]
+		content: [player, land]
 	})
 
-	return {player, trees, canvas}
+	return {player, land, canvas}
 }
 
 const makeTrees = ()=> 16 .map (num =>
@@ -108,7 +108,7 @@ const gameLoop = world => past => timestamp => {
 		moveBy (actionVec [actionWord] ?? [0, 0, 0]) (speed)
 	}
 
-	keys.pressed.size && sel ('#world').setAttribute (
+	keys.pressed.size && sel ('#land').setAttribute (
 		'transform',
 		`rotate(${mod (angle * 360 / 256, 360)}) ` +
 		`translate (${position.slice ().reverse ().join(' ')})`
