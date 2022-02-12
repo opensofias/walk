@@ -45,7 +45,7 @@ const gameLoop = world => past => timestamp => {
 	const actions = keys.actionList
 
 	if (keys.newEvent) {
-		sel ('#player').setAttribute ('points',
+		world.player.setAttribute ('points',
 			playerSprite (actions, fast)
 		)
 	} keys.newEvent = false
@@ -57,7 +57,7 @@ const gameLoop = world => past => timestamp => {
 
 	const now = updatePosition ({past, actions, speed})
 
-	keys.pressed.size && sel ('#land').setAttribute (
+	actions.length && world.land.setAttribute (
 		'transform',
 		`rotate(${mod (now.angle * 360 / 256, 360)}) ` +
 		`translate (${now.position.slice ().reverse ().join(' ')})`
