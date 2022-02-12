@@ -58,11 +58,11 @@ const polygonString = array =>
 	)
 
 const vecAdd = (...vecs) =>
-vecs.reduce ((acc, cur) =>
-	acc.map ((comp, idx) =>
-		comp + cur [idx]
+	vecs.reduce ((acc, cur) =>
+		acc.map ((comp, idx) =>
+			comp + cur [idx]
+		)
 	)
-)
 
 const vecMul = (vec, fact) =>
 	fact == 1 ? vec : vec.map (comp => comp * fact)
