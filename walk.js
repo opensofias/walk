@@ -41,11 +41,13 @@ const keys = {
 const gameLoop = world => past => timestamp => {
 	const fast = keys.pressed.has ('shift')
 
+	const actions = keys.actionList
+
 	if (keys.newEvent) {
 		showDebug ()
 
 		sel ('#player').setAttribute ('points',
-			playerSprite (keys.actionList, fast)
+			playerSprite (actions, fast)
 		)
 	} keys.newEvent = false
 	
@@ -54,14 +56,7 @@ const gameLoop = world => past => timestamp => {
 		(timestamp - past.timestamp) /
 		1000 * 60 * (fast ? 4 : 1)
 
-	//todo: functionalize this
-	const now = (({position, angle}) => {
-		const state = {position, angle}
-		for (const actionWord of keys.actionList) {
-			moveBy (state) (actionVec [actionWord] ?? [0, 0, 0]) (speed)
-		}
-		return state
-	}) (past)
+	const now = updatePosition ({past, actions, speed})
 
 	keys.pressed.size && sel ('#land').setAttribute (
 		'transform',
@@ -72,20 +67,29 @@ const gameLoop = world => past => timestamp => {
 	requestAnimationFrame (gameLoop (world) ({...now, timestamp}))
 }
 
+const updatePosition = ({past, actions, speed}) => {
+	let {angle, position} = past
+
+	const moveBy = ([y, x, r]) => {
+		position[0] +=
+			cos (angle * TAU / 256) * y * speed -
+			sin (angle * TAU / 256) * x * speed
+		position[1] +=
+			sin (angle * TAU / 256) * y * speed +
+			cos (angle * TAU / 256) * x * speed
+		angle += speed * r
+	}
+	for (const actionWord of actions) {
+		moveBy (actionVec [actionWord] ?? [0, 0, 0])
+	}
+
+	return {angle, position}
+}
+
 const mod = (x, y) => ((x % y) + y) % y
 const {sin, cos, floor, ceil} = Math
 const TAU = Math.PI * 2
 
-// todo: functionalize this
-const moveBy = state => ([y, x, r]) => speed => {
-	state.position[0] +=
-		cos (state.angle * TAU / 256) * y * speed -
-		sin (state.angle * TAU / 256) * x * speed
-	state.position[1] +=
-		sin (state.angle * TAU / 256) * y * speed +
-		cos (state.angle * TAU / 256) * x * speed
-	state.angle += speed * r
-}
 
 export const actionVec = {
 	up: [1, 0, 0], down: [-1, 0, 0],
