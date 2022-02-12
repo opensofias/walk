@@ -4,14 +4,16 @@ import {makeWorld, playerSprite} from './render.js'
 
 onload = ()=> {
 	const world = makeWorld ()
+	const beginning = {
+		position: [0, 0],
+		angle: 0,
+		timestamp: 0
+	}
 
 	document.body.appendChild (world.canvas)
 	keys.listen ()
-	requestAnimationFrame (gameLoop (world) ({}))
+	requestAnimationFrame (gameLoop (world) (beginning))
 }
-
-let	position = [0, 0]
-let	angle = 0
 
 const keys = {
 	listen () {
@@ -36,8 +38,6 @@ const keys = {
 	},
 }
 
-let lastFrame = 0
-
 const gameLoop = world => past => timestamp => {
 	const fast = keys.pressed.has ('shift')
 
@@ -51,35 +51,40 @@ const gameLoop = world => past => timestamp => {
 	
 
 	const speed =
-		(timestamp - lastFrame) /
+		(timestamp - past.timestamp) /
 		1000 * 60 * (fast ? 4 : 1)
-	lastFrame = timestamp
-	
-	for (const actionWord of keys.actionList) {
-		moveBy (actionVec [actionWord] ?? [0, 0, 0]) (speed)
-	}
+
+	//todo: functionalize this
+	const now = (({position, angle}) => {
+		const state = {position, angle}
+		for (const actionWord of keys.actionList) {
+			moveBy (state) (actionVec [actionWord] ?? [0, 0, 0]) (speed)
+		}
+		return state
+	}) (past)
 
 	keys.pressed.size && sel ('#land').setAttribute (
 		'transform',
-		`rotate(${mod (angle * 360 / 256, 360)}) ` +
-		`translate (${position.slice ().reverse ().join(' ')})`
+		`rotate(${mod (now.angle * 360 / 256, 360)}) ` +
+		`translate (${now.position.slice ().reverse ().join(' ')})`
 	)
 
-	requestAnimationFrame (gameLoop (world) ({}))
+	requestAnimationFrame (gameLoop (world) ({...now, timestamp}))
 }
 
 const mod = (x, y) => ((x % y) + y) % y
 const {sin, cos, floor, ceil} = Math
 const TAU = Math.PI * 2
 
-const moveBy = ([y, x, r]) => speed => {
-	position[0] +=
-		cos (angle * TAU / 256) * y * speed -
-		sin (angle * TAU / 256) * x * speed
-	position[1] +=
-		sin (angle * TAU / 256) * y * speed +
-		cos (angle * TAU / 256) * x * speed
-	angle += speed * r
+// todo: functionalize this
+const moveBy = state => ([y, x, r]) => speed => {
+	state.position[0] +=
+		cos (state.angle * TAU / 256) * y * speed -
+		sin (state.angle * TAU / 256) * x * speed
+	state.position[1] +=
+		sin (state.angle * TAU / 256) * y * speed +
+		cos (state.angle * TAU / 256) * x * speed
+	state.angle += speed * r
 }
 
 export const actionVec = {
