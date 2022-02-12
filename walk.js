@@ -24,6 +24,7 @@ const keys = {
 					.toLowerCase ()) (keyId)
 				this.newEvent = down != this.pressed.has (key)
 				this.newEvent && this.pressed [down ? 'add' : 'delete'] (key)
+				showDebug (this.pressed)
 		})
 	},
 	newEvent: false,
@@ -44,8 +45,6 @@ const gameLoop = world => past => timestamp => {
 	const actions = keys.actionList
 
 	if (keys.newEvent) {
-		showDebug ()
-
 		sel ('#player').setAttribute ('points',
 			playerSprite (actions, fast)
 		)
@@ -97,12 +96,12 @@ export const actionVec = {
 	cw: [0, 0, 1], ccw: [0, 0, -1]
 }
 
-const showDebug = ()=> {
+const showDebug = keys => {
 	const status = sel ('#status')
 	status && status.remove ()
 	document.body.appendChild (elem ({
 		attr: {id: 'status'},
-		content: [...keys.pressed].map (key =>
+		content: [...keys].map (key =>
 			elem ({content: key})
 		)
 	}))
