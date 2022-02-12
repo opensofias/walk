@@ -7,7 +7,7 @@ onload = ()=> {
 	const beginning = {
 		position: [0, 0],
 		angle: 0,
-		timestamp: 0
+		timestamp: performance.now()
 	}
 
 	document.body.appendChild (world.canvas)
