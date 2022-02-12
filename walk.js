@@ -26,6 +26,13 @@ const keys = {
 				this.newEvent && this.pressed [down ? 'add' : 'delete'] (key)
 				showDebug (this.pressed)
 		})
+		onblur = () => {
+			if (this.pressed.size) {
+				this.newEvent = true
+				this.pressed.clear ()
+				showDebug (this.pressed)
+			}
+		}
 	},
 	newEvent: false,
 	pressed: new Set(),
