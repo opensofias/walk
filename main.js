@@ -1,6 +1,7 @@
 import {} from './dimekit.js'
 import {makeWorld, render} from './render.js'
 import {keys} from './input.js'
+import {vecAdd, vecMul} from './tools.js'
 
 onload = ()=> {
 	const world = makeWorld ()
@@ -29,6 +30,14 @@ const gameLoop = ({world, input}) => past => timestamp => {
 
 	requestAnimationFrame (gameLoop ({world, input}) ({...now, timestamp}))
 }
+
+export const action2vec = ({actionList, accel}) =>
+	vecMul(
+		actionList.reduce(
+			(pre, cur) => vecAdd(pre, actionVec[cur] ?? [0, 0, 0]),
+			[0, 0, 0]
+		), accel
+	)
 
 const updatePosition = ({past, actionList, speed}) => {
 	let {angle, position} = past

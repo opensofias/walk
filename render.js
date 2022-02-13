@@ -1,5 +1,5 @@
-import {elem} from './tools.js'
-import {actionVec} from './main.js'
+import {elem, vecAdd, vecMul} from './tools.js'
+import {action2vec} from './main.js'
 
 export const makeWorld = ()=> {
 	const player = elem ({
@@ -56,14 +56,6 @@ export const playerSprite = (actionList = [], accel = 1) =>
 		spriteMod (action2vec({actionList, accel}))
 	))
 
-const action2vec = ({actionList, accel}) =>
-	vecMul(
-		actionList.reduce(
-			(pre, cur) => vecAdd(pre, actionVec[cur] ?? [0, 0, 0]),
-			[0, 0, 0]
-		), accel
-	)
-
 const spriteMod = ([y, x, r]) => [
 	-x, y - r, x - r, -y,
 	-x, y + r, x + r, -y,
@@ -75,13 +67,3 @@ const polygonString = array =>
 	array.reduce ((val, acc, idx) =>
 		[val, acc].join (' ,' [idx % 2])
 	)
-
-const vecAdd = (...vecs) =>
-	vecs.reduce ((acc, cur) =>
-		acc.map ((comp, idx) =>
-			comp + cur [idx]
-		)
-	)
-
-const vecMul = (vec, fact) =>
-	fact == 1 ? vec : vec.map (comp => comp * fact)
