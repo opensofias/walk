@@ -19,12 +19,13 @@ onload = ()=> {
 
 const gameLoop = ({world, input}) => past => timestamp => {
 	const actionList = input.next ().value
+	const moveVec = action2vec ({actionList})
 	const newAction = vecEq (actionList, past.actionList)
 	const speed = (timestamp - past.timestamp) / 1000 * 60
 
-	const now = updatePosition ({past, actionList, speed})
+	const now = updatePosition ({past, moveVec, speed})
 
-	render ({world, actionList, now, newAction})
+	render ({world, moveVec, now, newAction})
 
 	requestAnimationFrame (gameLoop ({world, input}) ({...now, timestamp, actionList}))
 }
@@ -46,9 +47,9 @@ export const action2vec = ({actionList, factor = 1}) =>
 const {sin, cos, floor, ceil} = Math
 const TAU = Math.PI * 2
 
-const updatePosition = ({past, actionList, speed}) => {
+const updatePosition = ({past, moveVec, speed}) => {
 	const {angle, position} = past
-	const [y, x, r] = action2vec ({actionList, factor: speed})
+	const [y, x, r] = vecMul (moveVec, speed)
 
 	return {
 		angle: angle + r,

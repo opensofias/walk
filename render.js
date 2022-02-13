@@ -1,5 +1,4 @@
-import {elem, vecAdd, vecMul} from './tools.js'
-import {action2vec} from './main.js'
+import {elem, vecAdd, vecEq, vecMul} from './tools.js'
 
 export const makeWorld = ()=> {
 	const player = elem ({
@@ -28,12 +27,12 @@ export const makeWorld = ()=> {
 
 const mod = (x, y) => ((x % y) + y) % y
 
-export const render = ({world, actionList, now, newAction}) => {
+export const render = ({world, moveVec, now, newAction}) => {
 	newAction && world.player.setAttribute (
-		'points', playerSprite (actionList)
+		'points', playerSprite (moveVec)
 	)
 
-	actionList.length && world.land.setAttribute (
+	!vecEq (moveVec, [0, 0, 0]) && world.land.setAttribute (
 		'transform',
 		`rotate(${mod (now.angle * 360 / 256, 360)}) ` +
 		`translate (${now.position.slice ().reverse ().join(' ')})`
@@ -50,10 +49,10 @@ const makeTrees = ()=> 16 .map (num =>
 	})
 )
 
-export const playerSprite = (actionList = []) =>
+export const playerSprite = (moveVec = [0, 0, 0]) =>
 	polygonString (vecAdd (
 		vecMul (baseSprite, 8),
-		spriteMod (action2vec({actionList}))
+		spriteMod (moveVec)
 	))
 
 const spriteMod = ([y, x, r]) => [
