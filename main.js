@@ -29,6 +29,12 @@ const gameLoop = ({world, input}) => past => timestamp => {
 	requestAnimationFrame (gameLoop ({world, input}) ({...now, timestamp, actionList}))
 }
 
+const actionVec = {
+	up: [1, 0, 0], down: [-1, 0, 0],
+	left: [0, 1, 0], right: [0, -1, 0],
+	cw: [0, 0, 1], ccw: [0, 0, -1]
+}
+
 export const action2vec = ({actionList, factor = 1}) =>
 	vecMul(
 		actionList.reduce(
@@ -36,6 +42,9 @@ export const action2vec = ({actionList, factor = 1}) =>
 			[0, 0, 0]
 		), factor * (actionList.includes ('shift') ? 4 : 1)
 	)
+
+const {sin, cos, floor, ceil} = Math
+const TAU = Math.PI * 2
 
 const updatePosition = ({past, actionList, speed}) => {
 	const {angle, position} = past
@@ -52,15 +61,4 @@ const updatePosition = ({past, actionList, speed}) => {
 			cos (angle * TAU / 256) * x
 		]
 	}
-}
-
-
-const {sin, cos, floor, ceil} = Math
-const TAU = Math.PI * 2
-
-
-export const actionVec = {
-	up: [1, 0, 0], down: [-1, 0, 0],
-	left: [0, 1, 0], right: [0, -1, 0],
-	cw: [0, 0, 1], ccw: [0, 0, -1]
 }
