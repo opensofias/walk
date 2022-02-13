@@ -1,5 +1,5 @@
 import {elem} from './tools.js'
-import {actionVec} from './walk.js'
+import {actionVec} from './main.js'
 
 export const makeWorld = ()=> {
 	const player = elem ({
