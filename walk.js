@@ -21,23 +21,27 @@ const gameLoop = ({world, actions}) => past => timestamp => {
 	window.test = actions.next ()
 	const accel = actionList.includes ('shift') ? 4 : 1
 
-	world.player.setAttribute (
-		'points', playerSprite (actionList, accel)
-	)
-
 	const speed =
 		(timestamp - past.timestamp) /
 		1000 * 60 * accel
 
 	const now = updatePosition ({past, actions: actionList, speed})
 
+	render ({world, actionList, now, accel})
+
+	requestAnimationFrame (gameLoop ({world, actions}) ({...now, timestamp}))
+}
+
+const render = ({world, actionList, now, accel}) => {
+	world.player.setAttribute (
+		'points', playerSprite (actionList, accel)
+	)
+
 	actionList.length && world.land.setAttribute (
 		'transform',
 		`rotate(${mod (now.angle * 360 / 256, 360)}) ` +
 		`translate (${now.position.slice ().reverse ().join(' ')})`
 	)
-
-	requestAnimationFrame (gameLoop ({world, actions}) ({...now, timestamp}))
 }
 
 const updatePosition = ({past, actions, speed}) => {
