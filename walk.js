@@ -69,14 +69,3 @@ export const actionVec = {
 	left: [0, 1, 0], right: [0, -1, 0],
 	cw: [0, 0, 1], ccw: [0, 0, -1]
 }
-
-const showDebug = keys => {
-	const status = sel ('#status')
-	status && status.remove ()
-	document.body.appendChild (elem ({
-		attr: {id: 'status'},
-		content: [...keys].map (key =>
-			elem ({content: key})
-		)
-	}))
-}
