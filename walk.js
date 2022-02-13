@@ -46,15 +46,15 @@ const keys = function* () {
 const gameLoop = ({world, actions}) => past => timestamp => {
 	const actionList = actions.next ().value
 	window.test = actions.next ()
-	const fast = actionList.includes ('shift')
+	const accel = actionList.includes ('shift') ? 4 : 1
 
 	world.player.setAttribute (
-		'points', playerSprite (actionList, fast)
+		'points', playerSprite (actionList, accel)
 	)
 
 	const speed =
 		(timestamp - past.timestamp) /
-		1000 * 60 * (fast ? 4 : 1)
+		1000 * 60 * accel
 
 	const now = updatePosition ({past, actions: actionList, speed})
 
