@@ -26,6 +26,20 @@ export const makeWorld = ()=> {
 	return {player, land, canvas}
 }
 
+const mod = (x, y) => ((x % y) + y) % y
+
+export const render = ({world, actionList, now, accel}) => {
+	world.player.setAttribute (
+		'points', playerSprite (actionList, accel)
+	)
+
+	actionList.length && world.land.setAttribute (
+		'transform',
+		`rotate(${mod (now.angle * 360 / 256, 360)}) ` +
+		`translate (${now.position.slice ().reverse ().join(' ')})`
+	)
+}
+
 const makeTrees = ()=> 16 .map (num =>
 	elem ({
 		tag: 'circle', svg: true,

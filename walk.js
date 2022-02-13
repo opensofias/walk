@@ -1,6 +1,5 @@
 import {} from './dimekit.js'
-import {elem, sel} from './tools.js'
-import {makeWorld, playerSprite} from './render.js'
+import {makeWorld, render} from './render.js'
 import {keys} from './input.js'
 
 onload = ()=> {
@@ -32,18 +31,6 @@ const gameLoop = ({world, actions}) => past => timestamp => {
 	requestAnimationFrame (gameLoop ({world, actions}) ({...now, timestamp}))
 }
 
-const render = ({world, actionList, now, accel}) => {
-	world.player.setAttribute (
-		'points', playerSprite (actionList, accel)
-	)
-
-	actionList.length && world.land.setAttribute (
-		'transform',
-		`rotate(${mod (now.angle * 360 / 256, 360)}) ` +
-		`translate (${now.position.slice ().reverse ().join(' ')})`
-	)
-}
-
 const updatePosition = ({past, actions, speed}) => {
 	let {angle, position} = past
 
@@ -63,7 +50,7 @@ const updatePosition = ({past, actions, speed}) => {
 	return {angle, position}
 }
 
-const mod = (x, y) => ((x % y) + y) % y
+
 const {sin, cos, floor, ceil} = Math
 const TAU = Math.PI * 2
 
