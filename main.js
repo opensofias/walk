@@ -4,7 +4,7 @@ import {keys} from './input.js'
 
 onload = ()=> {
 	const world = makeWorld ()
-	const actions = keys ()
+	const input = keys ()
 	const beginning = {
 		position: [0, 0],
 		angle: 0,
@@ -12,25 +12,25 @@ onload = ()=> {
 	}
 
 	document.body.appendChild (world.canvas)
-	requestAnimationFrame (gameLoop ({world, actions}) (beginning))
+	requestAnimationFrame (gameLoop ({world, input}) (beginning))
 }
 
-const gameLoop = ({world, actions}) => past => timestamp => {
-	const actionList = actions.next ().value
+const gameLoop = ({world, input}) => past => timestamp => {
+	const actionList = input.next ().value
 	const accel = actionList.includes ('shift') ? 4 : 1
 
 	const speed =
 		(timestamp - past.timestamp) /
 		1000 * 60 * accel
 
-	const now = updatePosition ({past, actions: actionList, speed})
+	const now = updatePosition ({past, actionList, speed})
 
 	render ({world, actionList, now, accel})
 
-	requestAnimationFrame (gameLoop ({world, actions}) ({...now, timestamp}))
+	requestAnimationFrame (gameLoop ({world, input}) ({...now, timestamp}))
 }
 
-const updatePosition = ({past, actions, speed}) => {
+const updatePosition = ({past, actionList, speed}) => {
 	let {angle, position} = past
 
 	const moveBy = ([y, x, r]) => {
@@ -42,7 +42,7 @@ const updatePosition = ({past, actions, speed}) => {
 			cos (angle * TAU / 256) * x * speed
 		angle += speed * r
 	}
-	for (const actionWord of actions) {
+	for (const actionWord of actionList) {
 		moveBy (actionVec [actionWord] ?? [0, 0, 0])
 	}
 
