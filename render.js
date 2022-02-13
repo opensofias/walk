@@ -50,14 +50,19 @@ const makeTrees = ()=> 16 .map (num =>
 	})
 )
 
-export const playerSprite = (actionList = [], accel = 1) => polygonString (vecAdd (
-	vecMul (baseSprite, 8),
-	spriteMod (
-	vecMul (actionList.reduce ((pre, cur) =>
-		vecAdd (pre, actionVec [cur] ?? [0, 0, 0]),
-		[0, 0, 0]),
-	accel))
-))
+export const playerSprite = (actionList = [], accel = 1) =>
+	polygonString (vecAdd (
+		vecMul (baseSprite, 8),
+		spriteMod (action2vec({actionList, accel}))
+	))
+
+const action2vec = ({actionList, accel}) =>
+	vecMul(
+		actionList.reduce(
+			(pre, cur) => vecAdd(pre, actionVec[cur] ?? [0, 0, 0]),
+			[0, 0, 0]
+		), accel
+	)
 
 const spriteMod = ([y, x, r]) => [
 	-x, y - r, x - r, -y,
