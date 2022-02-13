@@ -17,7 +17,6 @@ onload = ()=> {
 
 const gameLoop = ({world, actions}) => past => timestamp => {
 	const actionList = actions.next ().value
-	window.test = actions.next ()
 	const accel = actionList.includes ('shift') ? 4 : 1
 
 	const speed =
