@@ -4,6 +4,7 @@ import {makeWorld, playerSprite} from './render.js'
 
 onload = ()=> {
 	const world = makeWorld ()
+	const actions = keys ()
 	const beginning = {
 		position: [0, 0],
 		angle: 0,
@@ -11,66 +12,59 @@ onload = ()=> {
 	}
 
 	document.body.appendChild (world.canvas)
-	keys.listen ()
-	requestAnimationFrame (gameLoop (world) (beginning))
+	requestAnimationFrame (gameLoop ({world, actions}) (beginning))
 }
 
-const keys = {
-	listen () {
-		[onkeydown, onkeyup] = [true, false].map (
-			down => ({key: keyId}) => {
-				const key = ((x) =>
-					(x.startsWith ('Arrow') ? x.slice (5) : x)
-					.toLowerCase ()) (keyId)
-				this.newEvent = down != this.pressed.has (key)
-				this.newEvent && this.pressed [down ? 'add' : 'delete'] (key)
-				showDebug (this.pressed)
-		})
-		onblur = () => {
-			if (this.pressed.size) {
-				this.newEvent = true
-				this.pressed.clear ()
-				showDebug (this.pressed)
+const keys = function* () {
+	const pressed = new Set();
+	[onkeydown, onkeyup] = [true, false].map (
+		down => ({key: keyId}) => {
+			const key = ((x) =>
+				(x.startsWith ('Arrow') ? x.slice (5) : x)
+				.toLowerCase ()) (keyId)
+			if (down != pressed.has (key)) {
+				pressed [down ? 'add' : 'delete'] (key)
+				showDebug (pressed)
 			}
+	})
+	onblur = () => {
+		if (pressed.size) {
+			pressed.clear ()
+			showDebug (pressed)
 		}
-	},
-	newEvent: false,
-	pressed: new Set(),
-	actionMap: {
+	}
+
+	const actionMap = {
 		q: 'cw', e: 'ccw',
 		w: 'up', s: 'down',
 		a: 'left', d: 'right'
-	},
-	get actionList () {
-		return [...this.pressed].map (key => this.actionMap [key] ?? key)
-	},
+	}
+	while (true)
+		yield [...pressed].map (key => actionMap [key] ?? key)
 }
 
-const gameLoop = world => past => timestamp => {
-	const fast = keys.pressed.has ('shift')
+const gameLoop = ({world, actions}) => past => timestamp => {
+	const actionList = actions.next ().value
+	window.test = actions.next ()
+	const fast = actionList.includes ('shift')
 
-	const actions = keys.actionList
-
-	if (keys.newEvent) {
-		world.player.setAttribute ('points',
-			playerSprite (actions, fast)
-		)
-	} keys.newEvent = false
-	
+	world.player.setAttribute (
+		'points', playerSprite (actionList, fast)
+	)
 
 	const speed =
 		(timestamp - past.timestamp) /
 		1000 * 60 * (fast ? 4 : 1)
 
-	const now = updatePosition ({past, actions, speed})
+	const now = updatePosition ({past, actions: actionList, speed})
 
-	actions.length && world.land.setAttribute (
+	actionList.length && world.land.setAttribute (
 		'transform',
 		`rotate(${mod (now.angle * 360 / 256, 360)}) ` +
 		`translate (${now.position.slice ().reverse ().join(' ')})`
 	)
 
-	requestAnimationFrame (gameLoop (world) ({...now, timestamp}))
+	requestAnimationFrame (gameLoop ({world, actions}) ({...now, timestamp}))
 }
 
 const updatePosition = ({past, actions, speed}) => {
