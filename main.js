@@ -31,17 +31,17 @@ const gameLoop = ({world, input}) => past => timestamp => {
 	requestAnimationFrame (gameLoop ({world, input}) ({...now, timestamp}))
 }
 
-export const action2vec = ({actionList, accel = 1}) =>
+export const action2vec = ({actionList, factor = 1}) =>
 	vecMul(
 		actionList.reduce(
 			(pre, cur) => vecAdd(pre, actionVec[cur] ?? [0, 0, 0]),
 			[0, 0, 0]
-		), accel
+		), factor
 	)
 
 const updatePosition = ({past, actionList, speed}) => {
 	const {angle, position} = past
-	const [y, x, r] = action2vec ({actionList, accel: speed})
+	const [y, x, r] = action2vec ({actionList, factor: speed})
 
 	return {
 		angle: angle + r,
