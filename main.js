@@ -40,18 +40,20 @@ export const action2vec = ({actionList, accel = 1}) =>
 	)
 
 const updatePosition = ({past, actionList, speed}) => {
-	let {angle, position} = past
+	const {angle, position} = past
 	const [y, x, r] = action2vec ({actionList, accel: speed})
 
-	position[0] +=
-		cos (angle * TAU / 256) * y -
-		sin (angle * TAU / 256) * x
-	position[1] +=
-		sin (angle * TAU / 256) * y +
-		cos (angle * TAU / 256) * x
-	angle +=  r
-
-	return {angle, position}
+	return {
+		angle: angle + r,
+		position: [
+			position[0] +
+			cos (angle * TAU / 256) * y -
+			sin (angle * TAU / 256) * x,
+			position[1] +
+			sin (angle * TAU / 256) * y +
+			cos (angle * TAU / 256) * x
+		]
+	}
 }
 
 
