@@ -29,3 +29,7 @@ export const vecAdd = (...vecs) =>
 
 export const vecMul = (vec, fact) =>
 	fact == 1 ? vec : vec.map (comp => comp * fact)
+
+export const vecEq = (vec1, vec2) =>
+	vec1.length == vec2.length &&
+	vec1.every ((val, idx) => val == vec2 [idx])

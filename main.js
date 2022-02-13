@@ -1,7 +1,7 @@
 import {} from './dimekit.js'
 import {makeWorld, render} from './render.js'
 import {keys} from './input.js'
-import {vecAdd, vecMul} from './tools.js'
+import {vecAdd, vecMul, vecEq} from './tools.js'
 
 onload = ()=> {
 	const world = makeWorld ()
