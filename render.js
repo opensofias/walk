@@ -28,9 +28,9 @@ export const makeWorld = ()=> {
 
 const mod = (x, y) => ((x % y) + y) % y
 
-export const render = ({world, actionList, now, accel}) => {
+export const render = ({world, actionList, now}) => {
 	world.player.setAttribute (
-		'points', playerSprite (actionList, accel)
+		'points', playerSprite (actionList)
 	)
 
 	actionList.length && world.land.setAttribute (
@@ -50,10 +50,10 @@ const makeTrees = ()=> 16 .map (num =>
 	})
 )
 
-export const playerSprite = (actionList = [], accel = 1) =>
+export const playerSprite = (actionList = []) =>
 	polygonString (vecAdd (
 		vecMul (baseSprite, 8),
-		spriteMod (action2vec({actionList, factor: accel}))
+		spriteMod (action2vec({actionList}))
 	))
 
 const spriteMod = ([y, x, r]) => [
