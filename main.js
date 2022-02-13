@@ -9,7 +9,8 @@ onload = ()=> {
 	const beginning = {
 		position: [0, 0],
 		angle: 0,
-		timestamp: performance.now()
+		timestamp: performance.now(),
+		actionList: []
 	}
 
 	document.body.appendChild (world.canvas)
@@ -18,14 +19,14 @@ onload = ()=> {
 
 const gameLoop = ({world, input}) => past => timestamp => {
 	const actionList = input.next ().value
-
+	const newAction = vecEq (actionList, past.actionList)
 	const speed = (timestamp - past.timestamp) / 1000 * 60
 
 	const now = updatePosition ({past, actionList, speed})
 
-	render ({world, actionList, now})
+	render ({world, actionList, now, newAction})
 
-	requestAnimationFrame (gameLoop ({world, input}) ({...now, timestamp}))
+	requestAnimationFrame (gameLoop ({world, input}) ({...now, timestamp, actionList}))
 }
 
 export const action2vec = ({actionList, factor = 1}) =>

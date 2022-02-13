@@ -28,8 +28,8 @@ export const makeWorld = ()=> {
 
 const mod = (x, y) => ((x % y) + y) % y
 
-export const render = ({world, actionList, now}) => {
-	world.player.setAttribute (
+export const render = ({world, actionList, now, newAction}) => {
+	newAction && world.player.setAttribute (
 		'points', playerSprite (actionList)
 	)
 
