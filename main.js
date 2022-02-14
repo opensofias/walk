@@ -20,14 +20,17 @@ onload = ()=> {
 const gameLoop = ({world, input}) => past => timestamp => {
 	const actionList = input.next ().value
 	const moveVec = action2vec ({actionList})
-	const newAction = vecEq (actionList, past.actionList)
 	const speed = (timestamp - past.timestamp) / 1000 * 60
 
-	const now = updatePosition ({past, moveVec, speed})
+	const now = {
+		...updatePosition ({past, moveVec, speed}),
+		newAction: vecEq (actionList, past.actionList),
+		moveVec, actionList, timestamp
+	}
 
-	render ({world, moveVec, now, newAction})
+	render ({world, now})
 
-	requestAnimationFrame (gameLoop ({world, input}) ({...now, timestamp, actionList}))
+	requestAnimationFrame (gameLoop ({world, input}) (now))
 }
 
 const actionVec = {

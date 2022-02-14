@@ -27,12 +27,12 @@ export const makeWorld = ()=> {
 
 const mod = (x, y) => ((x % y) + y) % y
 
-export const render = ({world, moveVec, now, newAction}) => {
+export const render = ({world, now}) => {
+	const {x, y, angle, moveVec, newAction} = now
+	
 	newAction && world.player.setAttribute (
 		'points', playerSprite (moveVec)
 	)
-
-	const {x, y, angle} = now
 
 	!vecEq (moveVec, [0, 0, 0]) && world.land.setAttribute (
 		'transform',
