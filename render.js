@@ -32,10 +32,12 @@ export const render = ({world, moveVec, now, newAction}) => {
 		'points', playerSprite (moveVec)
 	)
 
+	const {x, y, angle} = now
+
 	!vecEq (moveVec, [0, 0, 0]) && world.land.setAttribute (
 		'transform',
-		`rotate(${mod (now.angle * 360 / 256, 360)}) ` +
-		`translate (${now.position.slice ().reverse ().join(' ')})`
+		`rotate(${mod (angle * 360 / 256, 360)}) ` +
+		`translate (${x + ' ' + y})`
 	)
 }
 

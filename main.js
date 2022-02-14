@@ -7,7 +7,7 @@ onload = ()=> {
 	const world = makeWorld ()
 	const input = keys ()
 	const beginning = {
-		position: [0, 0],
+		x: 0, y : 0,
 		angle: 0,
 		timestamp: performance.now(),
 		actionList: []
@@ -48,18 +48,14 @@ const {sin, cos, floor, ceil} = Math
 const TAU = Math.PI * 2
 
 const updatePosition = ({past, moveVec, speed}) => {
-	const {angle, position} = past
-	const [y, x, r] = vecMul (moveVec, speed)
+	const {angle, y, x} = past
+	const [dy, dx, dα] = vecMul (moveVec, speed)
 
 	return {
-		angle: angle + r,
-		position: [
-			position[0] +
-			cos (angle * TAU / 256) * y -
-			sin (angle * TAU / 256) * x,
-			position[1] +
-			sin (angle * TAU / 256) * y +
-			cos (angle * TAU / 256) * x
-		]
+		angle: angle + dα,
+		y: y + cos (angle * TAU / 256) * dy -
+			sin (angle * TAU / 256) * dx,
+		x: x + sin (angle * TAU / 256) * dy +
+			cos (angle * TAU / 256) * dx
 	}
 }
