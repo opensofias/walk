@@ -49,10 +49,10 @@ const TAU = Math.PI * 2
 
 const updatePosition = ({past, moveVec, speed}) => {
 	const {angle, y, x} = past
-	const [dy, dx, dα] = vecMul (moveVec, speed)
+	const [dy, dx, d_angle] = vecMul (moveVec, speed)
 
 	return {
-		angle: angle + dα,
+		angle: angle + d_angle,
 		y: y + cos (angle * TAU / 256) * dy -
 			sin (angle * TAU / 256) * dx,
 		x: x + sin (angle * TAU / 256) * dy +
