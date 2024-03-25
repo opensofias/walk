@@ -8,9 +8,10 @@
 			svg {
 				height: 100vh;
 				width: 100vw;
-			}
-			svg > * {
-				mix-blend-mode: screen;
+			
+				> * {
+					mix-blend-mode: screen;
+				}
 			}
 			body {
 				margin: 0;
@@ -23,14 +24,15 @@
 				position: fixed;
 				display: flex;
 				mix-blend-mode: screen;
-			}
-			#status > * {
-				text-align: center;
-				min-width: 1.5em;
-				color: #000;
-				background: #777;
-				margin: .25em;
-				padding: .25em;
+
+				> * {
+					text-align: center;
+					min-width: 1.5em;
+					color: #000;
+					background: #777;
+					margin: .25em;
+					padding: .25em;
+				}
 			}
 		</style>
 	</head>
